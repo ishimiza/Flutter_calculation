@@ -1,103 +1,61 @@
-// 表示
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MyTextField extends StatefulWidget {
-  _TextFiledState createState() => _TextFiledState();
-}
+class CalculatorView extends ConsumerWidget {
+  final String display = '0';
 
-class _TextFiledState extends State<TextField> {
-  String _expression = '1+1';
-  static final controller = StreamController<String>();
-
-  void _UpdateText(String letter) {
-    setState(() {
-      if (letter == '=' || letter == 'C')
-        _expression = '';
-      else
-        _expression += letter;
-    });
-  }
-
-  void initState() {
-    controller.stream.listen((event) => _UpdateText(event));
-  }
+  const CalculatorView({super.key, required String display});
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        flex: 1,
-        child: Container(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _expression,
-              style: TextStyle(
-                fontSize: 64.0,
-              ),
-            ),
-          ),
-        ));
-  }
-}
-
-class Button extends StatelessWidget {
-  final _key;
-
-  Button(this._key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: OutlinedButton(
-            child: Center(
-              child: Text(
-                _key,
-                style: TextStyle(fontSize: 46.0),
-              ),
-            ),
-            onPressed: () {
-              _TextFiledState.controller.sink.add(_key);
-            }));
-  }
-}
-
-class Keyboard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        flex: 2,
-        child: Center(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: <Widget>[
+        Expanded(
             child: Container(
-          color: const Color(0xff87cefa),
-          child: GridView.count(
-            crossAxisCount: 4,
-            mainAxisSpacing: 3.0,
-            crossAxisSpacing: 3.0,
-            children: [
-              '7',
-              '8',
-              '9',
-              '÷',
-              '4',
-              '5',
-              '6',
-              '×',
-              '1',
-              '2',
-              '3',
-              '-',
-              'C',
-              '0',
-              '=',
-              '+',
-            ].map((key) {
-              return GridTile(
-                child: Button(key),
-              );
-            }).toList(),
-          ),
-        )));
+                alignment: Alignment.bottomRight,
+                padding: const EdgeInsets.all(16.0),
+                child: Text(display,
+                    style:
+                        const TextStyle(fontSize: 70, color: Colors.white)))),
+        for (var row in _buttonRows) buildButtonRow(row),
+      ],
+    );
+  }
+
+  static const List<List<String>> _buttonRows = [
+    ['7', '8', '9', '÷'],
+    ['4', '5', '6', '×'],
+    ['1', '2', '3', '-'],
+    ['C', '0', '=', '+']
+  ];
+
+  Widget buildButtonRow(List<String> titles) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: titles
+          .map((title) => CalculatorButton(
+                title: title,
+                onPressed: () => _onButtonPressed(title),
+              ))
+          .toList(),
+    );
+  }
+}
+
+void _onButtonPressed(String title) {}
+
+class CalculatorButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onPressed;
+
+  const CalculatorButton(
+      {super.key, required this.title, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(title),
+    );
   }
 }

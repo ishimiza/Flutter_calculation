@@ -3,23 +3,22 @@ import 'package:untitled/view/calculator_view.dart';
 
 void main() => runApp(MyApp());
 
-// This widget is the root of your application.
-
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            body: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        MyTextField(),
-        Keyboard(),
-      ],
-    )));
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const CalculatorView(
+        display: '0',
+      ),
+    );
   }
 }
-
 /*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
