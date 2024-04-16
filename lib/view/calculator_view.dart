@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:untitled/view_model/calculator_state_notifier.dart';
 
 class CalculatorView extends ConsumerWidget {
-  final String display = '0';
+  /*final String display = '0';*/
 
   const CalculatorView({super.key, required String display});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(calculatorViewModelProvider);
+    final notifier = ref.watch(calculatorViewModelProvider.notifier);
     return Column(
       children: <Widget>[
         Expanded(
             child: Container(
                 alignment: Alignment.bottomRight,
                 padding: const EdgeInsets.all(16.0),
-                child: Text(display,
+                child: Text(state.result,
                     style:
                         const TextStyle(fontSize: 70, color: Colors.white)))),
-        for (var row in _buttonRows) buildButtonRow(row),
+        for (var row in _buttonRows) buildButtonRow(row, notifier),
       ],
     );
   }
@@ -29,20 +32,18 @@ class CalculatorView extends ConsumerWidget {
     ['C', '0', '=', '+']
   ];
 
-  Widget buildButtonRow(List<String> titles) {
+  Widget buildButtonRow(List<String> titles, CalculatorStateNotifier notifier) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: titles
           .map((title) => CalculatorButton(
                 title: title,
-                onPressed: () => _onButtonPressed(title),
+                onPressed: () => notifier.onButtonPressed(title),
               ))
           .toList(),
     );
   }
 }
-
-void _onButtonPressed(String title) {}
 
 class CalculatorButton extends StatelessWidget {
   final String title;
