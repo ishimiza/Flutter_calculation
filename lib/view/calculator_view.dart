@@ -6,6 +6,7 @@ class CalculatorView extends ConsumerWidget {
   /*final String display = '0';*/
 
   const CalculatorView({super.key, required String display});
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
