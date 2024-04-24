@@ -1,10 +1,7 @@
-
 import 'package:decimal/decimal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:untitled/view_model/calculator_view_model.dart';
-
-
 final calculatorViewModelProvider =
     StateNotifierProvider<CalculatorStateNotifier, CalculatorViewModel>((ref) {
   return CalculatorStateNotifier(
@@ -12,7 +9,6 @@ final calculatorViewModelProvider =
         result: '0', ),
   );
 });
-
 class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
   CalculatorStateNotifier(super.state);
 
@@ -31,11 +27,16 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
   final opetext = <String>['÷', '×', '+', '-'];
 
   String lastOutput = '0'; //計算結果を表示する用
-  late Decimal preserveOutput ; //計算結果を保持する用
-  late Decimal num1 ; //初めに入力される数字
-  late Decimal num2 ; //2回目から入力される数字
-  double divideOutput = 0.0;
+  Decimal preserveOutput = Decimal.zero;  //計算結果を保持する用
+  Decimal num1 = Decimal.zero;  //初めに入力される数字
+  Decimal num2 = Decimal.zero; //2回目から入力される数字
+  Decimal divideOutput = Decimal.zero; //割り算の計算結果の格納用
+  double divide1 = 0;//初めに入力される数字(割り算)
+  double divide2 = 0;//2回目から入力される数字(割り算)
+  double temporaryDivideOutput = 0; //割り算の結果の一時保存用
+  double scaled = 0; //割り算の結果を四捨五入する用
   String operand = ''; //演算子
+  RegExp reg = RegExp(r'\.0+$'); //小数点の末尾の0を削除するため
 
   var logger = Logger(
     printer: PrettyPrinter(),
@@ -44,41 +45,49 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
   void opeCalculate() {
     if (operand == '+') {
       preserveOutput = num1 + num2;
+      lastOutput = preserveOutput.toString();
       logger.d('num1: $num1, num2: $num2, preserveOutput: $preserveOutput');
     }
     if (operand == '-') {
       preserveOutput = num1 - num2;
+      lastOutput = preserveOutput.toString();
       logger.d('num1: $num1, num2: $num2, preserveOutput: $preserveOutput');
     }
     if (operand == '×') {
       preserveOutput = num1 * num2;
+      lastOutput = preserveOutput.toString();
       logger.d('num1: $num1, num2: $num2, preserveOutput: $preserveOutput');
     }
     if (operand == '÷') {
-      preserveOutput = (num1 / num2).toDecimal();
-      logger.d('num1: $num1, num2: $num2, preserveOutput: $preserveOutput');
+      divide1 = double.parse(num1.toString());
+      divide2 = double.parse(num2.toString());
+      temporaryDivideOutput = (divide1/divide2);
+      scaled =(temporaryDivideOutput * 1000).round() / 1000;
+      lastOutput = Decimal.parse(scaled.toString()).toString().replaceAll(reg, '');
+      preserveOutput = Decimal.parse(temporaryDivideOutput.toString());
+      logger.d('num1: $num1, num2: $num2,  preserveOutput: $preserveOutput');
     }
-    lastOutput = preserveOutput.toString();
     num1 = preserveOutput;
-    num2 = Decimal.parse('0');
+    num2 = Decimal.zero;
     operand = '';
+    logger.d('num1: $num1, num2: $num2, operand: $operand, lastOutput; $lastOutput');
   }
 
   void onButtonPressed(String buttonText) {
     logger.d(buttonText);
     if (buttonText == 'C') {
       operand = '';
-      num1 = Decimal.parse('0');
-      num2 = Decimal.parse('0');
+      num1 = Decimal.zero;
+      num2 = Decimal.zero;
       lastOutput = '0';
-      preserveOutput = Decimal.parse('0');
+      preserveOutput = Decimal.zero;
     } else if (inttext.contains(buttonText)) {
       if (lastOutput == '0') {
         lastOutput = buttonText;
         num1 = Decimal.parse(lastOutput);
       } else if (lastOutput != '0') {
         if (opetext.contains(operand)) {
-          if (num2 == Decimal.parse('0')) {
+          if (num2 == Decimal.zero) {
             lastOutput = buttonText;
           } else {
             lastOutput = lastOutput + buttonText;
@@ -110,12 +119,16 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
           lastOutput = preserveOutput.toString();
         }
         if (operand == '÷') {
-          preserveOutput = (num1 / num2).toDecimal();
-          lastOutput = preserveOutput.toString();
+          divide1 = double.parse(num1.toString());
+          divide2 = double.parse(num2.toString());
+          temporaryDivideOutput = (divide1/divide2);
+          scaled =(temporaryDivideOutput * 1000).round() / 1000;
+          lastOutput = Decimal.parse(scaled.toString()).toString().replaceAll(reg, '');
+          preserveOutput = Decimal.parse(temporaryDivideOutput.toString());
         }
         operand = buttonText;
         num1 = preserveOutput;
-        num2 = Decimal.parse('0');
+        num2 = Decimal.zero;
       }
     }
 
