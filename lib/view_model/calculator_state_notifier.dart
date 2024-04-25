@@ -1,9 +1,7 @@
-
 import 'package:decimal/decimal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:untitled/view_model/calculator_view_model.dart';
-
 
 final calculatorViewModelProvider =
     StateNotifierProvider<CalculatorStateNotifier, CalculatorViewModel>((ref) {
@@ -31,9 +29,9 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
   final opetext = <String>['÷', '×', '+', '-'];
 
   String lastOutput = '0'; //計算結果を表示する用
-  late Decimal preserveOutput ; //計算結果を保持する用
-  late Decimal num1 ; //初めに入力される数字
-  late Decimal num2 ; //2回目から入力される数字
+  Decimal preserveOutput = Decimal.zero ; //計算結果を保持する用
+  Decimal num1 = Decimal.zero ; //初めに入力される数字
+  Decimal num2 = Decimal.zero; //2回目から入力される数字
   double divideOutput = 0.0;
   String operand = ''; //演算子
 
@@ -118,11 +116,9 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
         num2 = Decimal.parse('0');
       }
     }
-
     state = state.copyWith(
         result: lastOutput,
         );
-
     logger.d(
         'lastOutput: $lastOutput,  num1: $num1, num2: $num2, operand: $operand, preserveOutput: $preserveOutput');
   }
