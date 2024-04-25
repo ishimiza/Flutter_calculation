@@ -7,10 +7,6 @@ part 'calculator_view_model.g.dart';
 class CalculatorViewModel with _$CalculatorViewModel {
   const factory CalculatorViewModel({
     required String result,
-    required String operand,
-    required int num1,
-    required int num2,
-    required int preserveoutput,
   }) = _CalculatorViewModel;
 
   factory CalculatorViewModel.fromJson(Map<String, dynamic> json) =>

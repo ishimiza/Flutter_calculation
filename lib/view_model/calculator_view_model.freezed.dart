@@ -21,10 +21,6 @@ CalculatorViewModel _$CalculatorViewModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CalculatorViewModel {
   String get result => throw _privateConstructorUsedError;
-  String get operand => throw _privateConstructorUsedError;
-  int get num1 => throw _privateConstructorUsedError;
-  int get num2 => throw _privateConstructorUsedError;
-  int get preserveoutput => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,8 +34,7 @@ abstract class $CalculatorViewModelCopyWith<$Res> {
           CalculatorViewModel value, $Res Function(CalculatorViewModel) then) =
       _$CalculatorViewModelCopyWithImpl<$Res, CalculatorViewModel>;
   @useResult
-  $Res call(
-      {String result, String operand, int num1, int num2, int preserveoutput});
+  $Res call({String result});
 }
 
 /// @nodoc
@@ -56,32 +51,12 @@ class _$CalculatorViewModelCopyWithImpl<$Res, $Val extends CalculatorViewModel>
   @override
   $Res call({
     Object? result = null,
-    Object? operand = null,
-    Object? num1 = null,
-    Object? num2 = null,
-    Object? preserveoutput = null,
   }) {
     return _then(_value.copyWith(
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
               as String,
-      operand: null == operand
-          ? _value.operand
-          : operand // ignore: cast_nullable_to_non_nullable
-              as String,
-      num1: null == num1
-          ? _value.num1
-          : num1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      num2: null == num2
-          ? _value.num2
-          : num2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      preserveoutput: null == preserveoutput
-          ? _value.preserveoutput
-          : preserveoutput // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -94,8 +69,7 @@ abstract class _$$CalculatorViewModelImplCopyWith<$Res>
       __$$CalculatorViewModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String result, String operand, int num1, int num2, int preserveoutput});
+  $Res call({String result});
 }
 
 /// @nodoc
@@ -110,32 +84,12 @@ class __$$CalculatorViewModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? result = null,
-    Object? operand = null,
-    Object? num1 = null,
-    Object? num2 = null,
-    Object? preserveoutput = null,
   }) {
     return _then(_$CalculatorViewModelImpl(
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
               as String,
-      operand: null == operand
-          ? _value.operand
-          : operand // ignore: cast_nullable_to_non_nullable
-              as String,
-      num1: null == num1
-          ? _value.num1
-          : num1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      num2: null == num2
-          ? _value.num2
-          : num2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      preserveoutput: null == preserveoutput
-          ? _value.preserveoutput
-          : preserveoutput // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -143,30 +97,17 @@ class __$$CalculatorViewModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CalculatorViewModelImpl implements _CalculatorViewModel {
-  const _$CalculatorViewModelImpl(
-      {required this.result,
-      required this.operand,
-      required this.num1,
-      required this.num2,
-      required this.preserveoutput});
+  const _$CalculatorViewModelImpl({required this.result});
 
   factory _$CalculatorViewModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalculatorViewModelImplFromJson(json);
 
   @override
   final String result;
-  @override
-  final String operand;
-  @override
-  final int num1;
-  @override
-  final int num2;
-  @override
-  final int preserveoutput;
 
   @override
   String toString() {
-    return 'CalculatorViewModel(result: $result, operand: $operand, num1: $num1, num2: $num2, preserveoutput: $preserveoutput)';
+    return 'CalculatorViewModel(result: $result)';
   }
 
   @override
@@ -174,18 +115,12 @@ class _$CalculatorViewModelImpl implements _CalculatorViewModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CalculatorViewModelImpl &&
-            (identical(other.result, result) || other.result == result) &&
-            (identical(other.operand, operand) || other.operand == operand) &&
-            (identical(other.num1, num1) || other.num1 == num1) &&
-            (identical(other.num2, num2) || other.num2 == num2) &&
-            (identical(other.preserveoutput, preserveoutput) ||
-                other.preserveoutput == preserveoutput));
+            (identical(other.result, result) || other.result == result));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, result, operand, num1, num2, preserveoutput);
+  int get hashCode => Object.hash(runtimeType, result);
 
   @JsonKey(ignore: true)
   @override
@@ -203,26 +138,14 @@ class _$CalculatorViewModelImpl implements _CalculatorViewModel {
 }
 
 abstract class _CalculatorViewModel implements CalculatorViewModel {
-  const factory _CalculatorViewModel(
-      {required final String result,
-      required final String operand,
-      required final int num1,
-      required final int num2,
-      required final int preserveoutput}) = _$CalculatorViewModelImpl;
+  const factory _CalculatorViewModel({required final String result}) =
+      _$CalculatorViewModelImpl;
 
   factory _CalculatorViewModel.fromJson(Map<String, dynamic> json) =
       _$CalculatorViewModelImpl.fromJson;
 
   @override
   String get result;
-  @override
-  String get operand;
-  @override
-  int get num1;
-  @override
-  int get num2;
-  @override
-  int get preserveoutput;
   @override
   @JsonKey(ignore: true)
   _$$CalculatorViewModelImplCopyWith<_$CalculatorViewModelImpl> get copyWith =>
