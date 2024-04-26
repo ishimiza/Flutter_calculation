@@ -131,11 +131,9 @@ class CalculatorStateNotifier extends StateNotifier<CalculatorViewModel> {
         num2 = Decimal.zero;
       }
     }
-
     state = state.copyWith(
         result: lastOutput,
         );
-
     logger.d(
         'lastOutput: $lastOutput,  num1: $num1, num2: $num2, operand: $operand, preserveOutput: $preserveOutput');
   }
